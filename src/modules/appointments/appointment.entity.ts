@@ -1,13 +1,8 @@
 import Doctor from "src/modules/doctors/doctor.entity";
 import MedicalOffice from "src/modules/medical_office/medical_office.entity";
 import Patient from "src/modules/patients/patient.entity";
+import State from "src/modules/appointments/enumState"
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
-
-enum State {
-    reserved,
-    attended,
-    canceled
-}
 
 @Entity()
 export default class Appointment {
@@ -56,6 +51,6 @@ export default class Appointment {
         this.date = new Date(date);
         this.hour = hour;
         this.observations = observations;
-        this.state = State.reserved;
+        this.state = State.RESERVED;
     }
 }
