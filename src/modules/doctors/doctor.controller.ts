@@ -1,4 +1,17 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
+import { DoctorsService } from './doctor.service';
 
-@Controller()
-export class DoctorController {}
+@Controller('doctors')
+export class DoctorsController {
+    constructor(private readonly doctorsService: DoctorsService) {}
+
+    @Get()
+    findAll() {
+        return this.doctorsService.findAll();
+    }
+
+    @Get(':id')
+    findOne(@Param('id') id: number) {
+        return this.doctorsService.findOne(id);
+    }
+}

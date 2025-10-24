@@ -6,6 +6,19 @@ import Doctor from './modules/doctors/doctor.entity';
 import MedicalOffice from './modules/medical_office/medical_office.entity';
 import MedicalSpecialty from './modules/medical_specialty/medical_specialty.entity';
 import Patient from './modules/patients/patient.entity';
+// Services
+import { AppointmentsService } from './modules/appointments/appointments.service';
+import { DoctorsService } from './modules/doctors/doctor.service';
+import { PatientsService } from './modules/patients/patient.service';
+import { MedicalOfficeService } from './modules/medical_office/medical_office.service';
+import { MedicalSpecialtyService } from './modules/medical_specialty/medical_specialty.service';
+
+// Controllers
+import { AppointmentsController } from './modules/appointments/appointments.controller';
+import { DoctorsController } from './modules/doctors/doctor.controller';
+import { PatientsController } from './modules/patients/patient.controller';
+import { MedicalOfficeController } from './modules/medical_office/medical_office.controller';
+import { MedicalSpecialtyController } from './modules/medical_specialty/medical_specialty.controller';
 
 @Module({
   imports: [
@@ -24,8 +37,21 @@ import Patient from './modules/patients/patient.entity';
         synchronize: true,
       })
     }),
+    TypeOrmModule.forFeature([Appointment, Doctor, Patient, MedicalOffice, MedicalSpecialty]),
   ],
-  controllers: [],
-  providers: [],
+  controllers: [
+    AppointmentsController,
+    DoctorsController,
+    PatientsController,
+    MedicalOfficeController,
+    MedicalSpecialtyController,
+  ],
+  providers: [
+    AppointmentsService,
+    DoctorsService,
+    PatientsService,
+    MedicalOfficeService,
+    MedicalSpecialtyService,
+  ],
 })
 export class AppModule {}
