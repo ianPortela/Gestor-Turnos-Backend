@@ -1,7 +1,7 @@
 enum State {
-    RESERVED = 'reserved',
-    ATTENDED = 'attended',
-    CANCELED = 'canceled',
+    RESERVED = 'RESERVADO',
+    ATTENDED = 'ATENDIDO',
+    CANCELED = 'CANCELADO',
 }
 
 export default State;

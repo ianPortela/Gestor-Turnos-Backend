@@ -1,27 +1,42 @@
-import { IsString, IsDate, IsEnum, IsNumber } from 'class-validator';
+import {
+    IsString,
+    IsDate,
+    IsNumber,
+    IsNotEmpty,
+    IsOptional,
+    IsPositive,
+} from 'class-validator';
 import { Type } from 'class-transformer';
-import State from 'src/modules/appointments/enumState'
 
 export default class CreateAppointmentDto {
     @IsDate()
-    @Type(() => Date)
+    @Type(() => Date) 
+    @IsNotEmpty()
     date: Date;
 
     @IsString()
+    @IsNotEmpty() // Un turno no debería tener una hora vacía
     hour: string;
 
     @IsString()
+    @IsOptional() // Hacemos que 'observations' sea opcional
     observations: string;
 
-    @IsEnum(State)
-    state: State;
+    @IsNumber()
+    @IsPositive() // Los IDs generalmente son números positivos
+    @IsNotEmpty()
+    @Type(() => Number) // Asegura que se transforme a número si viene como string
+    patientIdPatient: number;
 
     @IsNumber()
-    id_patient: Number;
+    @IsPositive()
+    @IsNotEmpty()
+    @Type(() => Number)
+    doctorIdDoctor: number;
 
     @IsNumber()
-    id_doctor: Number;
-
-    @IsNumber()
-    number_office: Number;
+    @IsPositive()
+    @IsNotEmpty()
+    @Type(() => Number)
+    medicalOfficeNumberOffice: number;
 }
