@@ -38,7 +38,6 @@ export class AppointmentsService {
         const doctor = await this.doctorRepository.findOneBy({ id_doctor: doctorIdDoctor });
         const medical_office = await this.medicalOfficeRepository.findOneBy({ number_office: medicalOfficeNumberOffice });
 
-        // B. Valida que existan (¡importante!)
         if (!patient) {
             throw new NotFoundException(`Paciente con ID ${patientIdPatient} no encontrado`);
         }
@@ -60,13 +59,14 @@ export class AppointmentsService {
             medical_office: medical_office,
         });
 
-        // D. Guarda la nueva entidad
+
         return await this.appointmentRepository.save(newAppointment);
     }
 
     async findAll(): Promise<Appointment[]> {
         return await this.appointmentRepository.find({
             relations: ['patient', 'doctor', 'medical_office'],
+            order: { id_appointment: 'DESC' }
         });
     }
 
@@ -105,7 +105,6 @@ export class AppointmentsService {
         if (updateDto.observations) appointmentToUpdate.observations = updateDto.observations;
         if (updateDto.state) appointmentToUpdate.state = updateDto.state;
 
-        // Guarda la entidad actualizada
         return await this.appointmentRepository.save(appointmentToUpdate);
     }
 
