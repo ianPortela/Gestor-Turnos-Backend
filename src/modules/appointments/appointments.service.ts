@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import Appointment from './appointment.entity';
@@ -50,30 +50,27 @@ export class AppointmentsService {
         }
 
         //Validamos si ya existe un turno para evitar superposiciones
-        const superpuesto = await this.appointmentRepository.createQueryBuilder('appointment')
-            .where('appointment.date = :date', { date })
-            .andWhere('appointment.hour = :hour', { hour })
-            .andWhere('appointment.doctor = :doctorId', { doctorId: doctorIdDoctor })
-            .getOne();
+        try {
+            // C. Crea la entidad usando los OBJETOS COMPLETOS
+            const newAppointment = this.appointmentRepository.create({
+                date,
+                hour,
+                observations,
+                state: State.RESERVED,
+                patient: patient,
+                doctor: doctor,
+                medical_office: medical_office,
+            });
 
-        if (superpuesto) {
-            throw new Error(`El medico ya tiene un turno reservado en ese horario`);
+            // D. Guarda la nueva entidad
+            return await this.appointmentRepository.save(newAppointment);
+            
+        } catch (error) {
+            if (error.code === 'ER_DUP_ENTRY' || error.errno === 1062) {
+                throw new BadRequestException('El médico ya tiene un turno reservado en ese horario');
+            }
+            throw error;
         }
-
-
-        // C. Crea la entidad usando los OBJETOS COMPLETOS
-        const newAppointment = this.appointmentRepository.create({
-            date,
-            hour,
-            observations,
-            state: State.RESERVED,
-            patient: patient,
-            doctor: doctor,
-            medical_office: medical_office,
-        });
-
-        // D. Guarda la nueva entidad
-        return await this.appointmentRepository.save(newAppointment);
     }
 
     async findAll(): Promise<Appointment[]> {
