@@ -49,6 +49,18 @@ export class AppointmentsService {
             throw new NotFoundException(`Consultorio Nro ${medicalOfficeNumberOffice} no encontrado`);
         }
 
+        //Validamos si ya existe un turno para evitar superposiciones
+        const superpuesto = await this.appointmentRepository.createQueryBuilder('appointment')
+            .where('appointment.date = :date', { date })
+            .andWhere('appointment.hour = :hour', { hour })
+            .andWhere('appointment.doctor = :doctorId', { doctorId: doctorIdDoctor })
+            .getOne();
+
+        if (superpuesto) {
+            throw new Error(`El medico ya tiene un turno reservado en ese horario`);
+        }
+
+
         // C. Crea la entidad usando los OBJETOS COMPLETOS
         const newAppointment = this.appointmentRepository.create({
             date,
