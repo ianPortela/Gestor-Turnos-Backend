@@ -12,6 +12,7 @@ import { DoctorsService } from './modules/doctors/doctor.service';
 import { PatientsService } from './modules/patients/patient.service';
 import { MedicalOfficeService } from './modules/medical_office/medical_office.service';
 import { MedicalSpecialtyService } from './modules/medical_specialty/medical_specialty.service';
+import { ReportsService } from './modules/reports/reports.service';
 
 // Controllers
 import { AppointmentsController } from './modules/appointments/appointments.controller';
@@ -19,6 +20,7 @@ import { DoctorsController } from './modules/doctors/doctor.controller';
 import { PatientsController } from './modules/patients/patient.controller';
 import { MedicalOfficeController } from './modules/medical_office/medical_office.controller';
 import { MedicalSpecialtyController } from './modules/medical_specialty/medical_specialty.controller';
+import { ReportsController } from './modules/reports/reports.controller';
 
 @Module({
   imports: [
@@ -45,6 +47,7 @@ import { MedicalSpecialtyController } from './modules/medical_specialty/medical_
     PatientsController,
     MedicalOfficeController,
     MedicalSpecialtyController,
+    ReportsController,
   ],
   providers: [
     AppointmentsService,
@@ -52,6 +55,7 @@ import { MedicalSpecialtyController } from './modules/medical_specialty/medical_
     PatientsService,
     MedicalOfficeService,
     MedicalSpecialtyService,
+    ReportsService,
   ],
 })
 export class AppModule {}

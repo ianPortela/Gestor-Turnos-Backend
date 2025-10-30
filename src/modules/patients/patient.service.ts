@@ -20,6 +20,7 @@ export class PatientsService {
     async findAll(): Promise<Patient[]> {
         return await this.patientRepository.find({
         relations: ['appointments'],
+        order: {id_patient: 'DESC'}
         });
     }
 

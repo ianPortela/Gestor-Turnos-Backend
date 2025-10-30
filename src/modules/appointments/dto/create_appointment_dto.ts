@@ -15,11 +15,11 @@ export default class CreateAppointmentDto {
     date: Date;
 
     @IsString()
-    @IsNotEmpty() // Un turno no debería tener una hora vacía
+    @IsNotEmpty() 
     hour: string;
 
     @IsString()
-    @IsOptional() // Hacemos que 'observations' sea opcional
+    @IsOptional() 
     observations: string;
 
     @IsNumber()
