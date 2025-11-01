@@ -2,9 +2,10 @@ import Doctor from "src/modules/doctors/doctor.entity";
 import MedicalOffice from "src/modules/medical_office/medical_office.entity";
 import Patient from "src/modules/patients/patient.entity";
 import State from "src/modules/appointments/enumState"
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
+import { Entity, Unique, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
 
 @Entity()
+@Unique(['date', 'hour', 'doctor'])
 export default class Appointment {
     @PrimaryGeneratedColumn()
     id_appointment : number;

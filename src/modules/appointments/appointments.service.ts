@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import Appointment from './appointment.entity';
@@ -48,19 +48,33 @@ export class AppointmentsService {
             throw new NotFoundException(`Consultorio Nro ${medicalOfficeNumberOffice} no encontrado`);
         }
 
-        // C. Crea la entidad usando los OBJETOS COMPLETOS
-        const newAppointment = this.appointmentRepository.create({
-            date,
-            hour,
-            observations,
-            state: State.RESERVED,
-            patient: patient,
-            doctor: doctor,
-            medical_office: medical_office,
-        });
+        //Validamos si ya existe un turno para evitar superposiciones
+        try {
+            // C. Crea la entidad usando los OBJETOS COMPLETOS
+            const newAppointment = this.appointmentRepository.create({
+                date,
+                hour,
+                observations,
+                state: State.RESERVED,
+                patient: patient,
+                doctor: doctor,
+                medical_office: medical_office,
+            });
 
+<<<<<<< HEAD
 
         return await this.appointmentRepository.save(newAppointment);
+=======
+            // D. Guarda la nueva entidad
+            return await this.appointmentRepository.save(newAppointment);
+            
+        } catch (error) {
+            if (error.code === 'ER_DUP_ENTRY' || error.errno === 1062) {
+                throw new BadRequestException('El médico ya tiene un turno reservado en ese horario');
+            }
+            throw error;
+        }
+>>>>>>> ea89f79db4c0b1da8912761f2533c681a9730684
     }
 
     async findAll(): Promise<Appointment[]> {
